@@ -3,11 +3,117 @@
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 } */
 
-a {
+.no-style{
   /* color: #00B7FF; */
+  text-decoration: none !important;
+  color: #000;
+}
+.option-btn{
+  display: flex;
+}
+.btn .no-style{
+  color: white;
+}
+
+.option-btn button:nth-child(1){
+  margin-right: 10px;
 }
 
 #mapid{
   height: 520px;
   width: 100%;
+}
+
+/* form create bikes */
+.content-form{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url(https://cdn.pixabay.com/photo/2019/04/23/14/23/bike-4149653_960_720.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+h1 {
+  margin: 0;
+  color: #ffffff;
+  text-align: center;
+  font-size: 50px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  padding: 20px 0;
+}
+.box-multi-function{
+  background: rgba(0, 0, 0, 0.4117647058823529);
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 3em;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.grupo {
+  display: flex;
+  padding: 10px 5px;
+  background-color: #ffffff;
+}
+.grupo i{
+  color: #2b28ee;
+  font-size: 20px;
+  padding: 5px 5px;
+}
+.rot{
+  transform: rotate(270deg);
+}
+.grupo-formulario {
+  margin: 10px 0;
+  position: relative;
+}
+input[type="text"]
+{
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+    background: transparent;
+    color: #000;
+}
+input[type="text"]:focus{
+    outline: none;
+}
+input[type="submit"] {
+    background: #2b28ee;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    padding: 12px 60px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 6px;
+}
+input[type="submit"]:hover {
+    background-color: #00BCD4;
+    transition-duration: 1s;
+}
+p.w3l-register-p{
+  text-align: center;
+  margin-top: 2em;
+  background-image: linear-gradient(white, white);
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+  background-size: 10% 2px;
+}
+.w3l-register-p a {
+  color: #eee;
+  font-size: 22px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all .5s ease-in-out;
+}
+.w3l-register-p a:hover{
+  color: greenyellow;
 }

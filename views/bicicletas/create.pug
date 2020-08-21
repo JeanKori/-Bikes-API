@@ -1,0 +1,33 @@
+extends ../layout
+
+block content 
+
+    .content-form
+        .box-multi-function
+            .formulario
+                h1 Nueva Bicicleta
+                form(action='/bicynet/network/bicicleta' method='POST')
+                    .grupo-formulario
+                        .grupo
+                            i.fas.fa-barcode
+                            input#id.controlform(type='text' placeholder='ID' name='id' required='required')
+                    .grupo-formulario
+                        .grupo
+                            i.fas.fa-fill-drip
+                            input#color.controlform(type='text' placeholder='Color' name='Color' required='required')
+                    .grupo-formulario
+                        .grupo
+                            i.fas.fa-bicycle
+                            input#modelo.controlform(type='text' placeholder='Modelo' name='Modelo' required='required')
+                    .grupo-formulario
+                        .grupo
+                            i.far.fa-compass
+                            input#modelo.controlform(type='text' placeholder='Latitud' name='Lat' required='required')
+                    .grupo-formulario
+                        .grupo
+                            i.far.fa-compass.rot
+                            input#modelo.controlform(type='text' placeholder='Longitud' name='Long' required='required')
+                    input(type='submit' value='Registrar')
+                p.w3l-register-p
+                    a(href='/bicynet/network/bicicletas') Volver
+
