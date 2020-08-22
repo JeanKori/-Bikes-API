@@ -7,6 +7,8 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bikesRouter = require('./routes/bikes');
+//Rutas de API
+var apibikes = require('./routes/api/bikes');
 
 var app = express();
 
@@ -23,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bicynet', indexRouter);
 app.use('/bicynet/users', usersRouter);
 app.use('/bicynet/network', bikesRouter);
+app.use('/api', apibikes);
 
 
 // catch 404 and forward to error handler
