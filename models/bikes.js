@@ -26,7 +26,7 @@ bicicleta.findByID = ((BiciID)=>{
 
 bicicleta.removeByID = ((BiciId) => {
     for (let i = 0; i < bicicleta.allBicis.length; i++) {
-        if(bicicleta.allBicis[i].id === BiciId){
+        if(bicicleta.allBicis[i].id == BiciId){
             bicicleta.allBicis.splice(i, 1);
             break;
         }
@@ -36,8 +36,8 @@ bicicleta.removeByID = ((BiciId) => {
 var b1 = new bicicleta('1','red','urbana',[12.1404590, -86.2290317]);
 var b2 = new bicicleta('2','orange','urbana',[12.14258, -86.2291117]);
 
-bicicleta.add(b1);
-bicicleta.add(b2);
+// bicicleta.add(b1);
+// bicicleta.add(b2);
 
 // End ejemplo
 
