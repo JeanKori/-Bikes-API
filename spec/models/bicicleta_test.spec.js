@@ -1,5 +1,9 @@
 var Bicicleta = require('../../models/bikes');
 
+// insatlar localmente "npm install --save-dev jasmine"
+// inicializar con "npx jasmine innit"
+// Para hacerlo globalmente revisar documentacion
+
 beforeEach( ()=> { Bicicleta.allBicis = []; });//metodo que proporciona jasmine--indica la ejecucion antes de cada test
 
 // Listado de bicicleta
