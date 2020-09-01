@@ -26,6 +26,8 @@ Prueba API
 
 Para facilitar el uso de los endpoint en Postman, se adjuntan las rutas y verbo http correspondiente:
 
+Bicicletas
+
     •	Listado = GET: http://localhost:3000/api/bicicletas
 
     •	Nuevo Registro = POST: http://localhost:3000/api/bicicleta/create
@@ -33,6 +35,29 @@ Para facilitar el uso de los endpoint en Postman, se adjuntan las rutas y verbo 
     •	Actualización = PUT: http://localhost:3000/api/bicicleta/update
 
     •	Eliminación = DELETE: http://localhost:3000/api/bicicleta/delete
+        
+Usuarios
+
+    •	Listado = GET: http://localhost:3000/api/users/
     
+    •	Nuevo Registro = POST: http://localhost:3000/api/users/create
+    
+    •	Nueva Reservacion = POST: http://localhost:3000/api/users/reservar
+  
 ___________________________________________
-  URL del repositorio en Github https://github.com/JeanKori/-Bikes-API.git
+
+Test con Jasmine
+
+Para ejecutar los test unitarios:
+
+    •	API Bicicletas= ejecutar: npm test
+    
+    •	models bicileta= ejecutar: npx jasmine spec/models/bicicleta_test.spec.js
+    
+    •	models usuario= ejecutar: npx jasmine spec/models/user_test.spec.js
+
+___________________________________________
+ 
+ Repositorio
+ 
+ URL del repositorio en Github https://github.com/JeanKori/-Bikes-API.git
