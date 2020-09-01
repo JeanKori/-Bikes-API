@@ -1,44 +1,48 @@
-var bicicleta = function(id, color, modelo, ubicacion){
-    this.id = id;
-    this.color = color;
-    this.modelo = modelo;
-    this.ubicacion = ubicacion;
-}
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-// ejemplo solo para implementacion de arquitectura
-
-bicicleta.prototype.tostring = function(){
-    return'id: '+ this.id + "| modelo: "+this.modelo 
-}
-bicicleta.allBicis= [];
-bicicleta.add = function(AddBike){
-    bicicleta.allBicis.push(AddBike);
-}
-
-bicicleta.findByID = ((BiciID)=>{
-    var aBici = bicicleta.allBicis.find(x => x.id == BiciID);
-    if(aBici){
-        return aBici;
-    }
-    else
-        throw new Error(`No existe una bicicleta identificada con el id: ${BiciID}`);
-});
-
-bicicleta.removeByID = ((BiciId) => {
-    for (let i = 0; i < bicicleta.allBicis.length; i++) {
-        if(bicicleta.allBicis[i].id == BiciId){
-            bicicleta.allBicis.splice(i, 1);
-            break;
-        }
+var bicicletaSchema = new Schema({
+    code: Number,
+    color: String,
+    modelo: String,
+    ubicacion: {
+        type: [Number], index: {type: '2dsphere', sparse:true}
     }
 });
 
-var b1 = new bicicleta('1','red','urbana',[12.1404590, -86.2290317]);
-var b2 = new bicicleta('2','orange','urbana',[12.14258, -86.2291117]);
+bicicletaSchema.statics.createInstance= function(code, color, modelo, ubicacion){
+    return new this({
+        code: code,
+        color: color,
+        modelo: modelo,
+        ubicacion: ubicacion
+    });
+};
 
-// bicicleta.add(b1);
-// bicicleta.add(b2);
+bicicletaSchema.methods.toString= (()=>{
+    return'code: '+ this.code + '| modelo: '+this.color; 
+});
 
-// End ejemplo
+bicicletaSchema.statics.allBicis = function(cb){
+    return this.find({},cb);
+};
 
-module.exports= bicicleta;
+bicicletaSchema.statics.add = function(bici,cb){
+    this.create(bici,cb);
+};
+
+bicicletaSchema.statics.findByCode = function(code,cb){
+    return this.findOne({code: code},cb);
+};
+
+bicicletaSchema.statics.removeByCode = function(code,cb){
+    return this.deleteOne({code: code},cb);
+};
+
+
+bicicletaSchema.statics.updateByCode = function(code,bike,cb){
+    return this.findOneAndUpdate({code: code}, bike,{new:true, useFindAndModify:false},cb);
+};
+
+
+module.exports = mongoose.model('bicicletas', bicicletaSchema);
