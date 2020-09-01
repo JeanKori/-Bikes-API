@@ -1,48 +1,121 @@
+var mongoose = require('mongoose');
 var Bicicleta = require('../../models/bikes');
 
 // insatlar localmente "npm install --save-dev jasmine"
 // inicializar con "npx jasmine innit"
 // Para hacerlo globalmente revisar documentacion
 
-beforeEach( ()=> { Bicicleta.allBicis = []; });//metodo que proporciona jasmine--indica la ejecucion antes de cada test
+describe('Testing Bicicletas',()=>{
 
-// Listado de bicicleta
-describe('Listado_Bicicletas',()=>{
-    it('Listado vacio en inicio',()=>{
-        expect(Bicicleta.allBicis.length).toBe(0);
+    beforeEach(()=> {
+        var mongoDB= 'mongodb://localhost/testdb';
+        mongoose.connect(mongoDB,{useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true});
+
+        const db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'Mongo connection error'));
+        db.once('open', ()=>{
+            console.log('We are connected to test database!');
+        });
     });
-});
 
-// Agregar Nueva Bicicleta
-describe('Agregar_Bicicleta',()=>{
-    it('Agregacion de una',()=>{
-        expect(Bicicleta.allBicis.length).toBe(0);//En un comienzo no se ha agregado registro
-
-        //ejemplo-metodo de Agregacion
-        var bike = new Bicicleta('1','red','urbana',[12.1404590, -86.2290317]);
-        Bicicleta.add(bike);
-
-        expect(Bicicleta.allBicis.length).toBe(1);//Luego de la agregacion se espera 1 registro
-        expect(Bicicleta.allBicis[0]).toBe(bike);//comparamos que la nueva agregacion corresponda con el registro indicado en el metodo de agregacion  
+    afterEach((done)=>{
+        Bicicleta.deleteMany({}, (err, success)=> {
+            if (err) console.log(err);
+            done(); 
+        });
     });
-});
 
-// Buscar una bicicleta
-describe('Buscar_Bicicleta',()=>{
-    it('busqueda por identificador',()=>{
-        expect(Bicicleta.allBicis.length).toBe(0);//En un comienzo no hay registro
-
-        //Agregamos para comprobar la busqueda
-        var bike1 = new Bicicleta('1','red','urbana',[12.1404590, -86.2290317]);
-        var bike2 = new Bicicleta('2','orange','montañera',[12.14258, -86.2291117]);
-        Bicicleta.add(bike1);
-        Bicicleta.add(bike2);
-
-        var searchBike = Bicicleta.findByID(2);//Variable que guarda el elemento que definimos para la busqueda
-
-        // comprobamos que la busqueda especifica corresponda con los atributos del elemento correspondiente 
-        expect(searchBike.id).toBe(bike2.id);
-        expect(searchBike.color).toBe(bike2.color);
-        expect(searchBike.modelo).toBe(bike2.modelo);  
+    describe('Instancia Bicicletas',()=>{
+        it('Creando nueva instacia',()=>{
+            var bici = Bicicleta.createInstance(1,"verde","urbana",[-34.5, -54.1]);
+        
+            expect(bici.code).toBe(1);
+            expect(bici.color).toBe("verde");
+            expect(bici.modelo).toBe("urbana");
+            expect(bici.ubicacion[0]).toEqual(-34.5);
+            expect(bici.ubicacion[1]).toEqual(-54.1);
+        });
     });
+
+    describe('Metodo de listado AllBicis',()=>{
+        it('Comienza lista vacia',(done)=>{
+            Bicicleta.allBicis(function(err,bicis){
+                expect(bicis.length).toBe(0);
+                done();
+            });
+        });
+    });
+
+    describe('Metodo de Agregado',()=>{
+        it('Agregando nuevo registro',(done)=>{
+            var bici = new Bicicleta({code:1, color: "yellow", modelo: "urbana", ubicacion:[-34.5,-54.1]});
+            Bicicleta.add(bici, function(err, newBici){
+                if(err) console.log(err);
+                Bicicleta.allBicis(function(err,bicis){
+                    expect(bicis.length).toBe(1);
+                    expect(bicis[0].ubicacion).toEqual(bici.ubicacion);
+                    done();
+                });
+            });
+        });
+    });
+
+    describe('Metodo de busqueda',()=>{
+        it('busqueda por code 1',(done)=>{
+            Bicicleta.allBicis(function(err,bicis){
+                expect(bicis.length).toBe(0);
+
+                var bici1 = new Bicicleta({code:1, color: "yellow", modelo: "urbana", ubicacion:[-34.5,-54.1]});
+                Bicicleta.add(bici1, function(err, newBici){
+                    if (err) console.log(err);
+
+                    var bici2 = new Bicicleta({code:2, color: "green", modelo: "montañera", ubicacion:[34.5,54.1]});
+                    Bicicleta.add(bici2, function(err, newBici){
+                        if (err) console.log(err);
+
+                        Bicicleta.findByCode(1, function(err,codebici){
+                            Bicicleta.allBicis(function(err,bicis){
+                                expect(bicis.length).toBe(2);
+                            });
+                            expect(codebici.code).toBe(bici1.code);
+                            expect(codebici.color).toBe(bici1.color);
+                            expect(codebici.modelo).toBe(bici1.modelo);
+                            done();
+                        });
+                    });
+                });
+            });
+
+        });
+    });
+
+    describe('Metodo de Actualizacion',()=>{
+        it('Actualizar registro con code=2',(done)=>{
+            var bici1 = new Bicicleta({code:1, color: "yellow", modelo: "urbana", ubicacion:[-34.5,-54.1]});
+            Bicicleta.add(bici1, function(err, newBici){
+                if (err) console.log(err);
+
+                var bici2 = new Bicicleta({code:2, color: "green", modelo: "montañera", ubicacion:[34.5,54.1]});
+                Bicicleta.add(bici2, function(err, newBici){
+                    if (err) console.log(err);
+
+                    Bicicleta.allBicis(function(err,bicis){
+                        expect(bicis.length).toBe(2);
+                    });
+                    var codebici = ({code: 2, color: "red", modelo: "x12", ubicacion:[24.5,14.1]});
+                        
+                    Bicicleta.updateByCode(2,codebici,function(err,biciupdate){
+                        if (err) console.log(err);
+
+                        expect(biciupdate.code).toBe(codebici.code);
+                        expect(biciupdate.color).toBe("red");
+                        expect(biciupdate.modelo).toBe(codebici.modelo);
+                        done();
+                    });
+
+                });
+            });
+        });
+    });
+
 });
