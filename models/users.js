@@ -2,6 +2,8 @@ var reserva = require('./reserva');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var uniquevalidator = require('mongoose-unique-validator');
+
 const bcrypt = require('bcryptjs'); //npm install bcryptjs --save
 const saltRounds= bcrypt.genSaltSync(10);
 
@@ -30,6 +32,7 @@ var usuarioSchema = new Schema({
         trim: true,
         required: [true, "El email es obligatorio"],
         lowercase: true,
+        unique: true, //no se encuentra definido por defecto en moongose---requiere de npm i mongoose-unique-validator --save
         validate: [validaemail, "Por favor, ingrese un email valido."],
         match: [/^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/]
     },
@@ -44,6 +47,9 @@ var usuarioSchema = new Schema({
         default: false
     }
 });
+
+//Importar como plugin el unique validator de moongose
+usuarioSchema.plugin(uniquevalidator, {message: 'El {PATH} ya existe con otro usuario.'});
 
 usuarioSchema.pre('save',function(next){
     if(this.isModified('password')){
