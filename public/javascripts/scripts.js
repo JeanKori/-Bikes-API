@@ -5,6 +5,15 @@
     */
     (function ($) {
     "use strict"; // Start of use strict
+    
+    $('.toggle').click(function(){
+        $('.formulario').animate({
+            height: "toggle",
+            'padding-top': 'toggle',
+            'padding-bottom': 'toggle',
+            opacity: 'toggle'
+        }, "slow");  
+    });
 
     // Smooth scrolling using jQuery easing
     $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function () {

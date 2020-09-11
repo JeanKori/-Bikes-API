@@ -7,6 +7,12 @@ var uniquevalidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs'); //npm install bcryptjs --save
 const saltRounds= bcrypt.genSaltSync(10);
 
+const crypto= require('crypto');
+const { defaultMaxListeners } = require('stream');
+
+const Token = require('../models/token');
+const mailer = require('../mailer/mailer');
+
 const validaemail= ((email)=>{ //implementacion de Expresiones Regulares (REGUEX)
     const valida = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
     return valida.test(email);
@@ -66,6 +72,51 @@ usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb){
     var reservacion = new reserva({usuario: this._id, bicicleta: biciId, desde: desde, hasta: hasta});
     console.log(reservacion);
     reservacion.save(cb);
+}
+
+// Funcion para el envio de msj a partir del nodemailer
+usuarioSchema.methods.enviar_email_bienvenida = function(cb){
+    const token = new Token({_userId: this.id, token: crypto.randomBytes(32).toString('hex')});
+    const email_destination = this.email;
+    token.save(function(err){
+        if(err) {return console.log(err.message);}
+        const mailOptions= {
+            from: '"Welcome" <no-reply@bicynet.com>', 
+            to: email_destination,
+            subject: "Verificacion de Cuenta ✔",
+            text: 'Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
+                   haga click en el siguiente link: \n\n' + 'http://localhost:3000'+ '\/token/confirmation\/' +token.token+'\n'
+        };
+
+        mailer.sendMail(mailOptions, function(err){
+            if(err) {return console.log(err.message);}
+            console.log('Se ha enviado un email de confirmacion de cuenta a'+email_destination+'.');
+        });
+
+    });
+}
+
+// Funcion de envio de msj para restablecimiento de password
+usuarioSchema.methods.resetpassword = function(cb){
+    const token = new Token({_userId: this.id, token: crypto.randomBytes(32).toString('hex')});
+    const email_destination = this.email;
+    token.save(function(err){
+        if(err) {return cb(err);}
+        const mailOptions= {
+            from: '"Welcome" <no-reply@bicynet.com>', 
+            to: email_destination,
+            subject: "Restablecer contraseña.",
+            html: `<p>Hola ${token._userId}.</p>`+'<p>Para proceder al restablecimiento de la contraseña de su cuenta\
+                   haga click en el siguiente link:</p>' + `<a href="http://localhost:3000/login/resetpassword/${token.token}"> http://localhost:3000/resetpassword/${token.token} </a>`
+        };
+
+        mailer.sendMail(mailOptions, function(err){
+            if(err) {return cb(err);}
+
+            console.log('Se ha enviado un email para restablecer la contraseña de su cuenta a'+email_destination+'.');
+        });
+        cb(null);
+    });
 }
 
 module.exports = mongoose.model('usuario',usuarioSchema);

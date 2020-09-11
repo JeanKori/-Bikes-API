@@ -4,18 +4,35 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+// passport y Session
+const passport = require('./config/passport');
+const session = require('express-session');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bikesRouter = require('./routes/bikes');
+var tokenRouter = require('./routes/token');
 //Rutas de API
 var apibikes = require('./routes/api/bikes');
-var apiusers = require('./routes/api/users'); 
+var apiusers = require('./routes/api/users');
+//Acceso
+var loginuser = require('./routes/login'); 
+const storage = new session.MemoryStore;//guardamos sesion en memoria
 
 var app = express();
 
+app.use(session({//configuracion de cockies
+    cookie:{ maxAge: 120 * 60 * 60 * 1000 },
+    store: storage,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'network_bicycle***/*-+/..test$%&&/@new_port7856250'
+}));
+
 // Importacion y integracion de mongoose
 var mongoose = require('mongoose');
-const { error } = require('console');
+// const { error } = require('console');
+// const passport = require('passport');
 
 var mongoDB ='mongodb://localhost/red_bicicletas';
 mongoose.connect(mongoDB,{useNewUrlParser:true, useUnifiedTopology:true, useCreateIndex:true});
@@ -31,11 +48,16 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/bicynet', indexRouter);
+app.use('/login',loginuser);
+
+app.use('/bicynet',loggedIn, indexRouter);
 app.use('/bicynet/users', usersRouter);
 app.use('/bicynet/network', bikesRouter);
+app.use('/token', tokenRouter);
 app.use('/api', apibikes);
 app.use('/api/users', apiusers);
 
@@ -55,5 +77,15 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+function loggedIn(req, res, next){
+  if(req.user){
+    next();
+  }
+  else{
+    console.log('usuario no logueado');
+    res.redirect('/login');
+  }
+};
 
 module.exports = app;
