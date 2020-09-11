@@ -50,7 +50,11 @@ Test con Jasmine
 
 Para ejecutar los test unitarios:
 
-    •	API Bicicletas= ejecutar: npm test
+    •	Todos los test unitarios= ejecutar: npm test
+    
+Ejecucion Independiente:
+    
+    •	API bicileta= ejecutar: npx jasmine spec/API/bicicleta_api_test.spec.js
     
     •	models bicileta= ejecutar: npx jasmine spec/models/bicicleta_test.spec.js
     

@@ -7,7 +7,7 @@ var webUrl= 'http://localhost:3000/api/bicicletas';
 var webUrl2= 'http://localhost:3000/api/bicicleta';
 
 describe('API Bicicletas',()=>{
-    beforeAll((done) => { mongoose.connection.close(done) });
+    beforeAll((done) => { mongoose.connection.close(done)});
 
     beforeEach(()=> {
         var mongoDB= 'mongodb://localhost/testdb';

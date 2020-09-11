@@ -4,6 +4,7 @@ var Usuario = require('../../models/users');
 var Reserva = require('../../models/reserva');
 
 describe('Testing de usuarios',()=>{
+    beforeAll((done) => { mongoose.connection.close(done); mongoose.connection.removeAllListeners(); });
 
     beforeEach(function(done){
         var mongoDB= 'mongodb://localhost/testdb';
@@ -32,7 +33,7 @@ describe('Testing de usuarios',()=>{
 
     describe('Accion: Un usario realiza reserva de una bici',()=>{
         it('debe de registrarse la reserva',(done)=>{
-            const user = new Usuario({nombres: 'Jean Carlos', apellidos: 'Ruiz Chamorro', telefono: 895});
+            const user = new Usuario({nombres: 'Jean Carlos', apellidos: 'Ruiz Chamorro', telefono: 8959564, email:'tevale@gamil.com',password:'qwert123'});
             user.save();
             const bici = new Bicicleta({code:1, color: "yellow", modelo: "urbana", ubicacion:[-34.5,-54.1]});
             bici.save();

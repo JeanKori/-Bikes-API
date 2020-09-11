@@ -6,6 +6,7 @@ var Bicicleta = require('../../models/bikes');
 // Para hacerlo globalmente revisar documentacion
 
 describe('Testing Bicicletas',()=>{
+    beforeAll((done) => { mongoose.connection.close(done)});
 
     beforeEach(()=> {
         var mongoDB= 'mongodb://localhost/testdb';
