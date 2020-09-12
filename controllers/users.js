@@ -28,6 +28,7 @@ exports.user_update = ((req, res, next) => {
 
 exports.user_create_view = ((req, res) =>{
     res.render('login/index', {errors:{}, usuario:new Usuario()});
+    //res.redirect('/login');
 });
 
 exports.user_create = ((req, res, next)=>{

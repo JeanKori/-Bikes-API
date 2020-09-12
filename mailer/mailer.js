@@ -5,8 +5,8 @@ const mailcongif={
     port: 587,
     secure: false,
     auth:{
-        user:'norene.shanahan89@ethereal.email',
-        pass:'JRurCJpPFykdJH8ft8',
+        user:'Aqui va su email de ethereal',
+        pass:'Aqui su contraseña',
     }
 }
 

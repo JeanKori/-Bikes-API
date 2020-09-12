@@ -13,6 +13,9 @@ var usersRouter = require('./routes/users');
 var bikesRouter = require('./routes/bikes');
 var tokenRouter = require('./routes/token');
 //Rutas de API
+//const jwt = require('jsonwebtoken'); //npm install jsonwebtoken --save
+var verificarUsuer = require('./controllers/api/auth').verificarLogged;//LoggedIn para API
+var apiauth = require('./routes/api/auth');
 var apibikes = require('./routes/api/bikes');
 var apiusers = require('./routes/api/users');
 //Acceso
@@ -20,6 +23,8 @@ var loginuser = require('./routes/login');
 const storage = new session.MemoryStore;//guardamos sesion en memoria
 
 var app = express();
+
+app.set('SecretKey','jwt*_/!·$#~€japdbnftg..+1458d96f74d');
 
 app.use(session({//configuracion de cockies
     cookie:{ maxAge: 120 * 60 * 60 * 1000 },
@@ -31,7 +36,7 @@ app.use(session({//configuracion de cockies
 
 // Importacion y integracion de mongoose
 var mongoose = require('mongoose');
-// const { error } = require('console');
+const { error } = require('console');
 // const passport = require('passport');
 
 var mongoDB ='mongodb://localhost/red_bicicletas';
@@ -54,11 +59,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login',loginuser);
 
-app.use('/bicynet',loggedIn, indexRouter);
+app.use('/bicynet',indexRouter);
 app.use('/bicynet/users', usersRouter);
 app.use('/bicynet/network', bikesRouter);
 app.use('/token', tokenRouter);
-app.use('/api', apibikes);
+app.use('/api/auth', apiauth);
+app.use('/api',verificarUsuer, apibikes);
 app.use('/api/users', apiusers);
 
 
@@ -77,15 +83,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-function loggedIn(req, res, next){
-  if(req.user){
-    next();
-  }
-  else{
-    console.log('usuario no logueado');
-    res.redirect('/login');
-  }
-};
 
 module.exports = app;

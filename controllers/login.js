@@ -79,4 +79,15 @@ exports.resetPassword = function(req, res){
     });
 }
 
+//Metodo de verificacion de Login --que se utilizara como middleware
+exports.loggedIn =function loggedIn(req, res, next){
+    if(req.user){
+      next();
+    }
+    else{
+      console.log('usuario no logueado');
+      res.redirect('/login');
+    }
+};
+
 

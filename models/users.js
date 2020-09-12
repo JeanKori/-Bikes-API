@@ -84,8 +84,9 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb){
             from: '"Welcome" <no-reply@bicynet.com>', 
             to: email_destination,
             subject: "Verificacion de Cuenta ✔",
-            text: 'Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
-                   haga click en el siguiente link: \n\n' + 'http://localhost:3000'+ '\/token/confirmation\/' +token.token+'\n'
+            html: '<p>Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
+                   haga click en el siguiente link:</p> \n\n' + `<a href="http://localhost:3000/token/confirmation/${token.token}">
+                   http://localhost:3000/token/confirmation/${token.token}</a>`
         };
 
         mailer.sendMail(mailOptions, function(err){
