@@ -215,6 +215,10 @@ span{
   display: block;
 }
 
+/* clase de errores */
+.es-invalid{
+  border: 1px solid red;
+}
 /* responsive */
 
 @media(max-width:768px) {
