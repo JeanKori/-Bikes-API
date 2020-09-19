@@ -35,10 +35,16 @@ bicicletaSchema.statics.findByCode = function(code,cb){
     return this.findOne({code: code},cb);
 };
 
+bicicletaSchema.statics.findByIdBici = function(idbici,cb){
+    return this.findOne({_id: idbici},cb);
+};
+
 bicicletaSchema.statics.removeByCode = function(code,cb){
     return this.deleteOne({code: code},cb);
 };
-
+bicicletaSchema.statics.removeByIdBici = function(idBici,cb){
+    return this.deleteOne({_id: idBici},cb);
+};
 
 bicicletaSchema.statics.updateByCode = function(code,bike,cb){
     return this.findOneAndUpdate({code: code}, bike,{new:true, useFindAndModify:false},cb);
