@@ -6,11 +6,11 @@ block content
         .box-multi-function
             .formulario
                 h1 Actualizar Bicicleta
-                form(action=`/bicynet/network/bicicleta/update/${bici.id}` method='post')
+                form(action=`/bicynet/network/bicicleta/update/${bici.code}` method='post')
                     .grupo-formulario
                         .grupo
                             i.fas.fa-barcode
-                            input#id.controlform(type='text' placeholder='ID' name='id' value=bici.id required='required')
+                            input#id.controlform(type='text' placeholder='Codigo' name='code' value=bici.code required='required')
                     .grupo-formulario
                         .grupo
                             i.fas.fa-fill-drip
@@ -28,6 +28,9 @@ block content
                             i.far.fa-compass.rot
                             input#modelo.controlform(type='text' placeholder='Longitud' name='Long' value=bici.ubicacion[1] required='required')
                     input(type='submit' value='Actualizar')
-                p.w3l-register-p
-                    a(href='/bicynet/network/bicicletas') Volver
+                .renovar.btn.btn-no-padding.btn-outline-danger
+                    a.no-style-a.a-center(href='/bicynet/network/bicicletas') 
+                        h5 Cancelar
+
+    include ../footer
 

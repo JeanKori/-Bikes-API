@@ -10,7 +10,7 @@ block content
                     .grupo-formulario
                         .grupo
                             i.fas.fa-barcode
-                            input#id.controlform(type='text' placeholder='ID' name='id' required='required')
+                            input#id.controlform(type='text' placeholder='Codigo' name='code' required='required')
                     .grupo-formulario
                         .grupo
                             i.fas.fa-fill-drip
@@ -28,6 +28,9 @@ block content
                             i.far.fa-compass.rot
                             input#modelo.controlform(type='text' placeholder='Longitud' name='Long' required='required')
                     input(type='submit' value='Registrar')
-                p.w3l-register-p
-                    a(href='/bicynet/network/bicicletas') Volver
+                .renovar.btn.btn-no-padding.btn-outline-danger
+                    a.no-style-a.a-center(href='/bicynet/network/bicicletas') 
+                        h5 Cancelar
+
+    include ../footer
 
