@@ -1,0 +1,14 @@
+extends ../layout
+
+block content 
+    .content-login.forgot(style="height: 60vh;")
+
+        .box-multi-function
+            .formulario
+                if info && info.message && info.type
+                    h1 
+                        = info.type
+                    div.alert.alert-danger
+                        = info.message
+
+    include ../footer
