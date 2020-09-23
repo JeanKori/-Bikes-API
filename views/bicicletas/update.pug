@@ -1,11 +1,12 @@
 extends ../layout
 
 block content 
-
+    include ../navbar
+    
     .content-form
         .box-multi-function
             .formulario
-                h1 Actualizar Bicicleta
+                h2 Actualizar Bicicleta
                 form(action=`/bicynet/network/bicicleta/update/${bici.code}` method='post')
                     .grupo-formulario
                         .grupo

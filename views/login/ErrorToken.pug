@@ -1,12 +1,13 @@
 extends ../layout
 
 block content 
+    include ../navbar
     .content-login.forgot(style="height: 60vh;")
 
         .box-multi-function
             .formulario
                 if info && info.message && info.type
-                    h1 
+                    h2 
                         = info.type
                     div.alert.alert-danger
                         = info.message

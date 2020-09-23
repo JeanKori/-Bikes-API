@@ -26,6 +26,9 @@
 .option-btn button:nth-child(1){
   margin-right: 10px;
 }
+.margin-top-90{
+  margin-top: 120px !important;
+}
 
 #mapid{
   height: 520px;
@@ -79,31 +82,33 @@
   background-attachment: fixed;
   background-size: cover;
 }
-h1 {
+/* form create register */
+.content-login.register{
+  min-height: 60vh;
+  background: url(https://images.pexels.com/photos/3740792/pexels-photo-3740792.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+h2 {
   margin: 0;
   color: #ffffff;
   text-align: center;
-  font-size: 50px;
-  font-weight: 500;
+  font-size: 40px;
+  font-weight: 400;
   letter-spacing: 2px;
   padding: 20px 0;
-}
-h2 {
-  margin: 0;
-  color: #fcfcfd;
-  font-size: 25px;
-  font-weight: 400;
-  text-align: center;
-  letter-spacing: 1px;
-  padding-bottom: 10px;
 }
 .box-multi-function{
   background: rgba(0, 0, 0, 0.4117647058823529);
   max-width: 500px;
   margin: 0 auto;
-  padding: 3em;
+  padding: 1.5em;
   border-radius: 10px;
   box-sizing: border-box;
+  margin-top: 120px;
 }
 .grupo {
   display: flex;
@@ -124,7 +129,7 @@ h2 {
 }
 input[type="text"],
 input[type="password"],
-input[type="email"]
+input[type="email"],select
 {
     width: 100%;
     border: none;
@@ -135,7 +140,8 @@ input[type="email"]
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-input[type="email"]:focus{
+input[type="email"]:focus,
+select:focus{
     outline: none;
 }
 

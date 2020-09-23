@@ -1,81 +1,100 @@
 extends ../layout
 
 block content 
+    include ../navbar
+
     .content-login.login
-        h1 BICYCLE NETWORK
         .box-multi-function
-            .formulario
-                h2 INICIA SESI&Oacute;N
-                if info && info.message 
-                    div.alert.alert-danger
-                        = info.message
-                form(action='/login/' method='POST' onsubmit='return validar1();')
-                    .grupo-formulario
-                        .grupo
-                            i.fas.fa-at
-                            input#username.controlform(type='email' name='username' placeholder='Correo' required='required')
-                    .grupo-formulario
-                        .grupo
-                            i.fas.fa-unlock
-                            input#password.controlform(type='password' name='password' placeholder='Contraseña' required='required')
-                    input(type='submit' value='Iniciar Sesión')
-                    .renovar
-                        a.no-style-a(href='/login/forgotpassword') Olvid&eacute; mi contrase&ntilde;a
-                        p
-                            input(type='checkbox')
-                            | Recordarme
-                p.w3l-register-p &iquest;No tienes una cuenta?
-                .toggle
-                    span Crear una Cuenta
+            if !usuario_rol 
+                .formulario
+                    h2 INICIA SESI&Oacute;N
+                    if info && info.message 
+                        div.alert.alert-danger
+                            = info.message
+                    form(action='/login/' method='POST')
+                        .grupo-formulario
+                            .grupo
+                                i.fas.fa-at
+                                input#username.controlform(type='email' name='username' placeholder='Correo' required='required')
+                        .grupo-formulario
+                            .grupo
+                                i.fas.fa-unlock
+                                input#password.controlform(type='password' name='password' placeholder='Contraseña' required='required')
+                        input(type='submit' value='Iniciar Sesión')
+                        .renovar
+                            a.no-style-a(href='/login/forgotpassword') Olvid&eacute; mi contrase&ntilde;a
+                            p
+                                input(type='checkbox')
+                                | Recordarme
+                    p.w3l-register-p &iquest;No tienes una cuenta?
+                    .toggle
+                        span Crear una Cuenta
             .formulario
                 h2 REGISTRO
-                form(action='/bicynet/users/create' method='POST' onsubmit='return validar2();')
+                form(action='/bicynet/users/create' method='POST')
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.nombres ? 'es-invalid' : '')
                             i.fas.fa-user
-                            input#nombres.controlform(type='text' name="nombres" placeholder='Nombres' value= usuario.nombres required='required' class=errors.nombres ? 'es-invalid' : '')
-                            if errors.nombres
-                                small#nombreshelp.text-danger
-                                    = errors.nombres.message
+                            input#nombres.controlform(type='text' name="nombres" placeholder='Nombres' value= usuario.nombres required='required')
+                    if errors.nombres
+                        small#nombreshelp.text-danger
+                            = errors.nombres.message
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.apellidos ? 'es-invalid' : '')
                             i.fas.fa-user
-                            input#apellidos.controlform(type='text' name="apellidos" placeholder='Apellidos' value= usuario.apellidos required='required' class=errors.apellidos ? 'es-invalid' : '')
-                            if errors.apellidos
-                                small#apellidoshelp.text-danger
-                                    = errors.apellidos.message
+                            input#apellidos.controlform(type='text' name="apellidos" placeholder='Apellidos' value= usuario.apellidos required='required')
+                    if errors.apellidos
+                        small#apellidoshelp.text-danger
+                            = errors.apellidos.message
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.email ? 'es-invalid' : '')
                             i.fas.fa-at
-                            input#Correo.controlform(type='email' name='email' placeholder='Correo electronico' value= usuario.email required='required' class=errors.email ? 'es-invalid' : '')
-                            if errors.email
-                                small#emailhelp.text-danger
-                                    = errors.email.message
+                            input#Correo.controlform(type='email' name='email' placeholder='Correo electronico' value= usuario.email required='required')
+                    if errors.email
+                        small#emailhelp.text-danger
+                            = errors.email.message
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.telefono ? 'es-invalid' : '')
                             i.fas.fa-phone
-                            input#Telefono.controlform(type='text' name='telefono' placeholder='Teléfono' value= usuario.telefono class=errors.telefono ? 'es-invalid' : '')
-                            if errors.telefono
-                                small#telefonohelp.text-danger
-                                    = errors.telefono.message
+                            input#Telefono.controlform(type='text' name='telefono' placeholder='Teléfono' value= usuario.telefono)
+                    if errors.telefono
+                        small#telefonohelp.text-danger
+                            = errors.telefono.message
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.password ? 'es-invalid' : '')
                             i.fas.fa-unlock
-                            input#pwd.controlform(type='password' name='password' placeholder='Contraseña' value= usuario.password required='required' class=errors.password ? 'es-invalid' : '')
-                            if errors.password
-                                small#pwdhelp.text-danger
-                                    = errors.password.message
+                            input#pwd.controlform(type='password' name='password' placeholder='Contraseña' value= usuario.password required='required')
+                    if errors.password
+                        small#pwdhelp.text-danger
+                            = errors.password.message
                     .grupo-formulario
-                        .grupo
+                        .grupo(class=errors.confirm_password ? 'es-invalid' : '')
                             i.fas.fa-unlock
-                            input#pwd-confirm.controlform(type='password' name='confirm_password' placeholder='Ingrese Contraseña nuevamente' value= usuario.confirm_password required='required' class=errors.confirm_password ? 'es-invalid' : '')
-                            if errors.confirm_password
-                                small#pwdconfirmhelp.text-danger
-                                    = errors.confirm_password.message
-                    input(type='submit' value='Registrarse')
-                p.w3l-register-p &iquest;Ya tienes una cuenta?
-                .toggle
-                    span Iniciar Seci&oacute;n
+                            input#pwd-confirm.controlform(type='password' name='confirm_password' placeholder='Ingrese Contraseña nuevamente' required='required')
+                    if errors.confirm_password
+                        p
+                        small#pwdconfirmhelp.text-danger
+                            = errors.confirm_password.message
+                        p
+                    if !usuario_rol
+                        input(type='submit' value='Registrarse')
+
+                    if usuario_rol && usuario_rol == 'Super_admin' 
+                        .grupo-formulario
+                            .grupo
+                                i.fas.fa-user-shield
+                                select#role.controlform(name='rol' style="cursor:pointer;")
+                                    option(value='admin') Administrador
+                                    option(value='Super_admin') Super Administrador
+                        input(type='submit' value='Registrar')
+                        .renovar.btn.btn-no-padding.btn-outline-danger
+                            a.no-style-a.a-center(href='/bicynet/users/') 
+                                h5 Cancelar
+
+                if !usuario_rol 
+                    p.w3l-register-p &iquest;Ya tienes una cuenta?
+                    .toggle
+                        span Iniciar Seci&oacute;n
 
     include ../footer
     

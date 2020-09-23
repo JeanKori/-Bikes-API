@@ -1,43 +1,43 @@
 extends ../layout
 
 block content
-
-    .content-login
-        h1 Datos de Usuario
+    include ../navbar
+    .content-login.forgot
         .box-multi-function
             .formulario
                 h2 ACTUALIZAR REGISTRO
-                form(action=`/bicynet/users/update/${usuario.id}` method='POST' onsubmit='return validar2();')
+                form(action=`/bicynet/users/update/${usuario.id}` method='POST')
                     .grupo-formulario
                         .grupo
                             i.fas.fa-user
-                            input#nombres.controlform(type='text' name="nombres" placeholder='Nombres' value= usuario.nombres required='required' class=errors.nombres ? 'es-invalid' : '')
-                            if errors.nombres
-                                small#nombreshelp.text-danger
-                                    = errors.nombres.message
+                            input#nombres.controlform(type='text' name="nombres" placeholder='Nombres' value=usuario.nombres required='required' class=errors.nombres ? 'es-invalid' : '')
+                    if errors.nombres
+                        small#nombreshelp.text-danger
+                            = errors.nombres.message
                     .grupo-formulario
                         .grupo
                             i.fas.fa-user
-                            input#apellidos.controlform(type='text' name="apellidos" placeholder='Apellidos' value= usuario.apellidos required='required' class=errors.apellidos ? 'es-invalid' : '')
-                            if errors.apellidos
-                                small#apellidoshelp.text-danger
-                                    = errors.apellidos.message
+                            input#apellidos.controlform(type='text' name="apellidos" placeholder='Apellidos' value=usuario.apellidos required='required' class=errors.apellidos ? 'es-invalid' : '')
+                    if errors.apellidos
+                        small#apellidoshelp.text-danger
+                            = errors.apellidos.message
                     .grupo-formulario
                         .grupo
                             i.fas.fa-at
-                            input#Correo.controlform(type='email' name='email' placeholder='Correo electronico' value= usuario.email required='required' class=errors.email ? 'es-invalid' : '')
-                            if errors.email
-                                small#emailhelp.text-danger
-                                    = errors.email.message
+                            input#Correo.controlform(type='email' name='email' placeholder='Correo electronico' value=usuario.email required='required' class=errors.email ? 'es-invalid' : '')
+                    if errors.email
+                        small#emailhelp.text-danger
+                            = errors.email.message
                     .grupo-formulario
                         .grupo
                             i.fas.fa-phone
-                            input#Telefono.controlform(type='text' name='telefono' placeholder='Teléfono' value= usuario.telefono class=errors.telefono ? 'es-invalid' : '')
-                            if errors.telefono
-                                small#telefonohelp.text-danger
-                                    = errors.telefono.message
+                            input#Telefono.controlform(type='text' name='telefono' placeholder='Teléfono' value=usuario.telefono class=errors.telefono ? 'es-invalid' : '')
+                    if errors.telefono
+                        small#telefonohelp.text-danger
+                            = errors.telefono.message
                     input(type='submit' value='Actualizar')
-                p.w3l-register-p
-                    a(href='/bicynet/users/') Cancelar
+                .renovar.btn.btn-no-padding.btn-outline-danger
+                    a.no-style-a.a-center(href='/bicynet/users/') 
+                        h5 Cancelar
 
     include ../footer

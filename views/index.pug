@@ -1,28 +1,9 @@
 extends layout
 
 block content
-  //- h1= title
-  //- p Welcome to #{title}
 
   // Navigation
-  nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
-    .container
-      a.navbar-brand.js-scroll-trigger(href='#page-top') BICYCLE NETWORK
-      button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
-        | Menu
-        i.fas.fa-bars
-      #navbarResponsive.collapse.navbar-collapse
-        ul.navbar-nav.ml-auto
-          li.nav-item
-            a.nav-link.js-scroll-trigger(href='#about') Nosotros
-          li.nav-item
-            a.nav-link.js-scroll-trigger(href='#projects') Vision
-          li.nav-item
-            a.nav-link.js-scroll-trigger(href='#maps') Bicicletas
-          li.nav-item
-            a.nav-link.js-scroll-trigger(href='#signup') Contacto
-          li.nav-item
-            a.nav-link.js-scroll-trigger(href='/bicynet/network/bicicletas') Agregar
+  include navbar
 
   //Masthead
   header.masthead
@@ -82,9 +63,11 @@ block content
                 hr.d-none.d-lg-block.mb-0.mr-0
 
   //Maps
-  section#maps.projects-section.bg-light
-    .container-fluid
-      #mapid
+  if usuario_rol
+    if usuario_rol != "ordinary"
+      section#maps.projects-section.bg-light
+        .container-fluid
+          #mapid
         
 
   //Signup
@@ -127,4 +110,6 @@ block content
 
   //Footer
   include footer
-  script(src='/javascripts/map.js')
+  if usuario_rol
+    if usuario_rol != "ordinary"
+      script(src='/javascripts/map.js')

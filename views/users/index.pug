@@ -1,39 +1,38 @@
 extends ../layout
 
 block content
+    include ../navbar
+    .content-login.register
+        h2.margin-top-90
+            if usuario_rol && usuario_rol == "Super_admin"
+                .renovar.btn.btn-no-padding.btn-info(style="width: 350px; margin: 0 auto; margin-bottom: 25px;")
+                    a.no-style-a.a-center(href='/bicynet/users/create') 
+                        h4 Nuevo Usuario
 
-    h1
-        a(href='/bicynet/users/create') Nuevo Usuario
-
-    .container-fluid.table-responsive
-        table.table
-            thead
-                tr
-                    th(scope='col') #
-                    th(scope='col') Nombres
-                    th(scope='col') Apellidos
-                    th(scope='col') Email
-                    th(scope='col') Verificado
-                    th(scope='col') Opciones
-            tbody
-                each user in usuarios 
+        .container-fluid.table-responsive
+            table.table
+                thead
                     tr
-                        td(scope='row')=user.id
-                        td=user.nombres
-                        td=user.apellidos
-                        td=user.email
-                        td= user.verificado ? 'SI':'NO'
-                        td.option-btn
-                            button.link-buttom.btn.btn-success
-                                a.no-style(href=`/bicynet/users/update/${user.id}`) Actualizar
-                            form.inline(method='post' action=`/bicynet/users/delete/${user.id}`)
-                                input(type='hidden' name='id' value= user.id)
-                                button.link-button.btn.btn-danger(type='submit' name='submit_param' value='submit_value')
-                                    ='Eliminar'
-
-        br  
-        br                         
-        p.w3l-register-p
-            a.btn.btn-secondary(href='/bicynet') Bicycle Network 
+                        th(scope='col') #
+                        th(scope='col') Nombres
+                        th(scope='col') Apellidos
+                        th(scope='col') Email
+                        th(scope='col') Verificado
+                        th(scope='col') Opciones
+                tbody
+                    each user in usuarios 
+                        tr
+                            td(scope='row')=user.id
+                            td=user.nombres
+                            td=user.apellidos
+                            td=user.email
+                            td= user.verificado ? 'SI':'NO'
+                            td.option-btn
+                                button.link-buttom.btn.btn-success
+                                    a.no-style(href=`/bicynet/users/update/${user.id}`) Actualizar
+                                form.inline(method='post' action=`/bicynet/users/delete/${user.id}`)
+                                    input(type='hidden' name='id' value= user.id)
+                                    button.link-button.btn.btn-danger(type='submit' name='submit_param' value='submit_value')
+                                        ='Eliminar'
     
     include ../footer

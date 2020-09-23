@@ -1,0 +1,35 @@
+extends layout
+block content
+    nav#mainNav.navbar.navbar-expand-lg.navbar-light.fixed-top
+        .container
+            a.navbar-brand.js-scroll-trigger(href='/bicynet' title="HOME") BICYCLE NETWORK
+            button.navbar-toggler.navbar-toggler-right(type='button' data-toggle='collapse' data-target='#navbarResponsive' aria-controls='navbarResponsive' aria-expanded='false' aria-label='Toggle navigation')
+                | Menu
+                i.fas.fa-bars
+            #navbarResponsive.collapse.navbar-collapse
+                    ul.navbar-nav.ml-auto
+                        if !validate
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='#') Ayuda
+                        if validate == true
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='#about') Nosotros
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='#projects') Vision
+                            if usuario_rol && usuario_rol != "ordinary"     
+                                li.nav-item
+                                    a.nav-link.js-scroll-trigger(href='#maps') Ubicacion
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='#signup') Contacto
+                        if usuario_rol && usuario_rol == "admin" || usuario_rol == "Super_admin"
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='/bicynet/network/bicicletas') Bicicletas
+                        if usuario_rol && usuario_rol == "admin" || usuario_rol == "Super_admin"
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='/bicynet/users') Usuarios
+                        if !usuario_rol && validate   
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='/login') Login
+                        if usuario_rol == "ordinary" || usuario_rol == "admin" || usuario_rol == "Super_admin"
+                            li.nav-item
+                                a.nav-link.js-scroll-trigger(href='/login/logout') Logout
