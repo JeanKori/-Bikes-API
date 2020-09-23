@@ -1,7 +1,7 @@
 var Usuario = require('../models/users');
 var Token = require('../models/token');
 
-exports.confirmationGet =function(req, res, next){
+exports.confirmationGet =function(req, res){
     Token.findOne({token: req.params.token}, function(err, token){
         if(!token){
             return res.render('login/ErrorToken',{info: {type: 'Not Verified', message: 'El Token no coincide con ninguno asigando. Quizas haya expirado y debas de solicitar un nuevo Token.'}});

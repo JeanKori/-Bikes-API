@@ -46,15 +46,15 @@ var usuarioSchema = new Schema({
         type: String,
         required: [true, "El password es obligatorio."]
     },
-    // role: {
-    //     type: String,
-    //     default: 'admin',
-    //     enum: [
-    //         'ordinary',
-    //         'admin',
-    //         'Super_admin'
-    //     ]
-    // },
+    role: {
+        type: String,
+        default: 'ordinary',
+        enum: [
+            'ordinary',
+            'admin',
+            'Super_admin'
+        ]
+    },
     passwordResetToken: String,
     passwordResetTokenExpires: Date,
     verificado:{
@@ -94,7 +94,7 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb){
             to: email_destination,
             subject: "Verificacion de Cuenta ✔",
             html: '<p>Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
-                   haga click en el siguiente link:</p> \n\n' + `<a href="http://localhost:3000/token/confirmation/${token.token}">
+                   haga click en el siguiente link:</p> \n\n' + `<a href="http://localhost:3000/token/confirmation/${token.token}" target="_blank">
                    http://localhost:3000/token/confirmation/${token.token}</a>`
         };
 
@@ -117,7 +117,7 @@ usuarioSchema.methods.resetpassword = function(cb){
             to: email_destination,
             subject: "Restablecer contraseña.",
             html: `<p>Hola ${token._userId}.</p>`+'<p>Para proceder al restablecimiento de la contraseña de su cuenta\
-                   haga click en el siguiente link:</p>' + `<a href="http://localhost:3000/login/resetpassword/${token.token}"> http://localhost:3000/login/resetpassword/${token.token} </a>`
+                   haga click en el siguiente link:</p>' + `<a href="http://localhost:3000/login/resetpassword/${token.token}" target="_blank"> http://localhost:3000/login/resetpassword/${token.token} </a>`
         };
 
         mailer.sendMail(mailOptions, function(err){

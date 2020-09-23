@@ -12,6 +12,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bikesRouter = require('./routes/bikes');
 var tokenRouter = require('./routes/token');
+
 //Rutas de API
 //const jwt = require('jsonwebtoken'); //npm install jsonwebtoken --save
 var verificarUsuer = require('./controllers/api/auth').verificarLogged;//LoggedIn para API

@@ -1,7 +1,7 @@
 const passport = require('../config/passport');
 const User = require('../models/users');
 const Token = require('../models/token');
-
+const rol=['ordinary','admin','Super_admin'];
 
 exports.Login = function(req, res){
     res.render('login/index', {errors:{},usuario:new User()});
@@ -40,19 +40,14 @@ exports.forgot_password = function(req, res){
     })
 };
 
-exports.resertPassword_view = function(req, res, next){
+exports.resertPassword_view = function(req, res){
     Token.findOne({token: req.params.token}, function(err, token){
         if (!token){
-            return res.status(400).send({
-                type: 'not-verified',
-                msg: 'Token inexistente o no valido. Verifique que el token no haya expirado.'
-            });
+            return res.render('login/ErrorToken',{info: {type: 'Not Verified', message: 'Token inexistente o no valido. Verifique que el token no haya expirado.'}});
         }
         User.findById(token._userId, function(err, user){
             if(!user){
-                return res.status(400).send({
-                    msg: 'No existe un usuario asociado al Token.'
-                });
+                return res.render('login/ErrorToken',{info: {type: 'User not existent', message: 'No existe un usuario asociado al Token.'}});
             }
             res.render('login/resetPassword', {errors: {}, usuario: user});
         })
@@ -79,15 +74,58 @@ exports.resetPassword = function(req, res){
     });
 }
 
-//Metodo de verificacion de Login --que se utilizara como middleware
+//Middleware de verificacion de Login --
 exports.loggedIn =function loggedIn(req, res, next){
     if(req.user){
-      next();
+        req.role = req.user.role;
+        next();
     }
     else{
-      console.log('usuario no logueado');
-      res.redirect('/login');
+        console.log('usuario no logueado');
+        res.redirect('/bicynet/_');
     }
 };
+
+// Middleware para verificar los permisos de usuario no ordinario
+exports.permision_roles = function typeroles(req, res, next){
+    if(req.user.role != rol[0]){
+        next();
+        console.log('usuario con permisos de administrador');
+    }
+    else{
+        console.log('usuario no tiene permisos de administrador');
+        res.redirect('/bicynet/');
+    }
+};
+
+//Middleware para pestaña de login
+exports.userlogueado =function logueado(req, res, next){
+    if(req.user){
+        res.redirect('/bicynet/');
+        console.log('usuario logueado');
+    }
+    else{
+        next();
+    }
+};
+
+//Middleware para el caso de creacion de usuario que utilizamos una misma vista
+exports.permision_create_user =function create_user(req, res, next){
+    if(req.user){
+        req.role = req.user.role;
+        next();
+    }
+    else{
+        req.role= "denegate"
+        console.log('usuario sin permisos para vista');
+        next();
+    }
+};
+
+
+
+
+
+
 
 
