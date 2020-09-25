@@ -27,7 +27,7 @@ if(process.env.NODE_ENV === 'production'){
                 user: process.env.ethereal_user,
                 pass: process.env.ethereal_pwd,
             }
-        }        
+        };        
     }
 }
 

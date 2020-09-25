@@ -90,7 +90,7 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb){
     token.save(function(err){
         if(err) {return console.log(err.message);}
         const mailOptions= {
-            from: 'no-reply@bicynet.com', 
+            from: 'rzambra59@gmail.com', 
             to: email_destination,
             subject: "Verificacion de Cuenta ✔",
             html: '<p>Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
@@ -113,7 +113,7 @@ usuarioSchema.methods.resetpassword = function(cb){
     token.save(function(err){
         if(err) {return cb(err);}
         const mailOptions= {
-            from: 'no-reply@bicynet.com', 
+            from: 'rzambra59@gmail.com', 
             to: email_destination,
             subject: "Restablecer contraseña.",
             html: `<p>Hola ${token._userId}.</p>`+'<p>Para proceder al restablecimiento de la contraseña de su cuenta\
