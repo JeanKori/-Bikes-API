@@ -71,6 +71,11 @@ app.use('/api/auth', apiauth);
 app.use('/api',verificarUsuer, apibikes);
 app.use('/api/users', apiusers);
 
+// VERIFICACION DE DOMINIO PARA OAUTH GOOGLE
+app.use('/google1f9c42576085bab5', function(req,res){
+  res.sendFile(path.resolve('public/google1f9c42576085bab5.html'));
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
