@@ -83,9 +83,23 @@ usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb){
     reservacion.save(cb);
 }
 
+//verificacion de ambiente para el envio de mensaje
+let head_url;
+
+if(process.env.NODE_ENV === 'production'){
+    head_url = process.env.WEB_URL;
+}else{
+    if(process.env.NODE_ENV === 'staging'){
+        head_url = process.env.WEB_URL;
+    }else{
+        head_url = process.env.WEB_URL;
+    }
+}
+
 // Funcion para el envio de msj a partir del nodemailer
 usuarioSchema.methods.enviar_email_bienvenida = function(cb){
     const token = new Token({_userId: this.id, token: crypto.randomBytes(32).toString('hex')});
+    const name = this.nombres;
     const email_destination = this.email;
     token.save(function(err){
         if(err) {return console.log(err.message);}
@@ -93,14 +107,14 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb){
             from: 'rzambra59@gmail.com', 
             to: email_destination,
             subject: "Verificacion de Cuenta ✔",
-            html: '<p>Hola.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
-                   haga click en el siguiente link:</p> \n\n' + `<a href="http://localhost:3000/token/confirmation/${token.token}" target="_blank">
-                   http://localhost:3000/token/confirmation/${token.token}</a>`
+            html: '<p>Hola '+name+'.\n\n'+ 'Bienvenido a la red de Bicicletas urbanas mas grande del país, para verificar su cuenta \
+                   haga click en el siguiente link:</p> \n\n' + `<a href="${head_url}/token/confirmation/${token.token}" target="_blank">
+                   ${head_url}/token/confirmation/${token.token}</a>`
         };
 
         mailer.sendMail(mailOptions, function(err){
             if(err) {return console.log(err.message);}
-            console.log('Se ha enviado un email de confirmacion de cuenta a'+email_destination+'.');
+            console.log('Se ha enviado un email de confirmacion de cuenta a '+email_destination+'.');
         });
 
     });
@@ -110,14 +124,15 @@ usuarioSchema.methods.enviar_email_bienvenida = function(cb){
 usuarioSchema.methods.resetpassword = function(cb){
     const token = new Token({_userId: this.id, token: crypto.randomBytes(32).toString('hex')});
     const email_destination = this.email;
+    const name = this.nombres;
     token.save(function(err){
         if(err) {return cb(err);}
         const mailOptions= {
             from: 'rzambra59@gmail.com', 
             to: email_destination,
             subject: "Restablecer contraseña.",
-            html: `<p>Hola ${token._userId}.</p>`+'<p>Para proceder al restablecimiento de la contraseña de su cuenta\
-                   haga click en el siguiente link:</p>' + `<a href="http://localhost:3000/login/resetpassword/${token.token}" target="_blank"> http://localhost:3000/login/resetpassword/${token.token} </a>`
+            html: `<p>Hola ${name}.</p></br>`+'<p>Para proceder al restablecimiento de la contraseña de su cuenta\
+                   haga click en el siguiente link:</p>' + `<a href="${head_url}/login/resetpassword/${token.token}" target="_blank"> ${head_url}/login/resetpassword/${token.token} </a>`
         };
 
         mailer.sendMail(mailOptions, function(err){
