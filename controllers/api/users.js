@@ -11,11 +11,18 @@ exports.usuarios_list = function(req, res){
 };
 
 exports.usuarios_create = function(req, res){
-    var user= new usuario({nombres: req.body.nombres, apellidos: req.body.apellidos, telefono: req.body.telefono});
+    var user= new usuario({nombres: req.body.nombres, apellidos: req.body.apellidos, telefono: req.body.telefono, email: req.body.email, password: req.body.password, role: req.body.role});
     user.save(function(err, users){
-        res.status(200).json({
-            usuario:users 
-        });
+        if(err){
+            res.status(500).send({
+                error: err
+            });
+        }else{
+            users.enviar_email_bienvenida();
+            res.status(200).json({
+                usuario:users 
+            });
+        }
     });
 };
 

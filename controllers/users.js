@@ -76,7 +76,7 @@ exports.user_create = ((req, res)=>{
 exports.user_remove = ((req, res)=>{
     Usuario.findByIdAndDelete(req.body.id, function(err){
         if(err){
-            next(err);
+            console.log(err);
         }
         else{
             res.redirect('/bicynet/users/');

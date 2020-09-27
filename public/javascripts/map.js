@@ -16,11 +16,11 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // Agreagacion de los Marcadores de bicicletas en el MAPA a traves de la API
 $.ajax({
     dataType: "json",
-    url: "api/bicicletas",
+    url: "/api/bicicletas",
     success: function(result){
         console.log(result);
         result.bicicletas.forEach( (bici) => {
-            L.marker(bici.ubicacion, {title: bici.id}).addTo(map);
+            L.marker(bici.ubicacion, {title: bici.code}).addTo(map);
         });
     }
 })

@@ -20,7 +20,6 @@ var tokenRouter = require('./routes/token');
 
 //Rutas de API
 //const jwt = require('jsonwebtoken'); //npm install jsonwebtoken --save
-var verificarUsuer = require('./controllers/api/auth').verificarLogged;//LoggedIn para API
 var apiauth = require('./routes/api/auth');
 var apibikes = require('./routes/api/bikes');
 var apiusers = require('./routes/api/users');
@@ -84,7 +83,7 @@ app.use('/bicynet/users', usersRouter);
 app.use('/bicynet/network', bikesRouter);
 app.use('/token', tokenRouter);
 app.use('/api/auth', apiauth);
-app.use('/api',verificarUsuer, apibikes);
+app.use('/api', apibikes);
 app.use('/api/users', apiusers);
 
 // VERIFICACION DE DOMINIO PARA OAUTH GOOGLE
