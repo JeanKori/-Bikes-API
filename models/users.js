@@ -160,10 +160,10 @@ usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(conditi
              let values = {};
              values.googleId = condition.id;
              values.email = condition.emails[0].value;
-             values.nombres = condition.given_name || 'SIN NOMBRES';
-             values.apellidos = condition.family_name || 'SIN APELLIDOS';
+             values.nombres = condition.givenName || 'SIN NOMBRES';
+             values.apellidos = condition.familyName || 'SIN APELLIDOS';
              values.verificado = true;
-             values.password = condition._json.etag;
+             values.password = 'condition._json.etag';
              console.log('========== VALUES ============');
              console.log(values);
              self.create(values, (err, result) => {
