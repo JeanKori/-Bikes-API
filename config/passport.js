@@ -22,7 +22,7 @@ passport.use(new LocalStrategy(
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.WEB_URL + "auth/google/callback"
+    callbackURL: process.env.WEB_URL + "/auth/google/callback"
     },  function(accessToken, refreshToken, profile, cb){
             console.log(profile);
 
