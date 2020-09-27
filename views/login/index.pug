@@ -21,6 +21,11 @@ block content
                                 i.fas.fa-unlock
                                 input#password.controlform(type='password' name='password' placeholder='Contraseña' required='required')
                         input(type='submit' value='Iniciar Sesión')
+                        br
+                        .renovar.btn.btn-no-padding.btn-danger
+                            a.no-style-a.a-center( href='/auth/google' style="width:100%; display: flex") 
+                                i.fab.fa-google(style="width:15%; font-size: 22px; margin-top:-2px;") 
+                                h6(style="width:70%;")  INICIAR CON GOOGLE
                         .renovar
                             a.no-style-a(href='/login/forgotpassword') Olvid&eacute; mi contrase&ntilde;a
                             p

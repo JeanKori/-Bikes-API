@@ -10,6 +10,8 @@ var logger = require('morgan');
 // passport y Session
 const passport = require('./config/passport');
 const session = require('express-session');
+// asegurar el correcto manejo de sesiones en produccion
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -23,8 +25,22 @@ var apiauth = require('./routes/api/auth');
 var apibikes = require('./routes/api/bikes');
 var apiusers = require('./routes/api/users');
 //Acceso
-var loginuser = require('./routes/login'); 
-const storage = new session.MemoryStore;//guardamos sesion en memoria
+var loginuser = require('./routes/login');
+
+// Manejo de storage segun ambiente
+let storage;
+if(process.env.NODE_ENV === 'development'){
+  storage = new session.MemoryStore;//guardamos sesion en memoria
+}else{
+  storage= new MongoDBStore({
+    uri: process.env.MONGO_URI,
+    collection: 'sessions'
+  });
+  storage.on('error', function(error){
+    assert.ifError(error);
+    assert.ok(false);
+  });
+}
 
 var app = express();
 
@@ -40,7 +56,7 @@ app.use(session({//configuracion de cockies
 
 // Importacion y integracion de mongoose
 var mongoose = require('mongoose');
-const { error } = require('console');
+const { error, assert } = require('console');
 // const passport = require('passport');
 
 var mongoDB = process.env.MONGO_URI;
@@ -76,6 +92,20 @@ app.use('/google1f9c42576085bab5', function(req,res){
   res.sendFile(path.resolve('public/google1f9c42576085bab5.html'));
 });
 
+app.get('/auth/google', 
+    passport.authenticate('google', {scope: [
+      'https://www.googleapis.com/auth/plus.login',
+      'https://www.googleapis.com/auth/plus.profile.emails.read'
+
+    ]})
+);
+
+app.get('/auth/google/callback', 
+    passport.authenticate('google', {
+      successRedirect: '/bicynet',
+      failureRedirect: '/login'
+    })
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
