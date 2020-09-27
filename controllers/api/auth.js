@@ -69,3 +69,18 @@ exports.verificarLogged= function validaruser(req, res, next){
       }
     });
 };
+
+
+// Metodo de verificacion a traves de token de facebook
+exports.authFacebookToken = function(req, res, next) {
+    if (req.user){
+        req.user.save().then( () => {
+            const token = jwt.sign({id: userInfo._id},req.app.get('secretKey'),{expiresIn:'7d'});
+            res.status(200).json({message:'Usuario encontrado o creado',data:{usuario:userInfo,token:token}});
+         }).catch((err) => {
+             res.statis(500).json({message: err.message});
+         });
+    } else {
+        res.status(401);
+    }
+}

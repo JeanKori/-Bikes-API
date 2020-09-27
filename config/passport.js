@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookTokenStrategy = require('passport-facebook-token');
 const Usuario = require('../models/users');
 
 // Usuario.validatepassword
@@ -18,7 +19,7 @@ passport.use(new LocalStrategy(
     }
 ));
 
-// Estrategia google auth 2.0
+// Estrategia google outh 2.0
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -31,6 +32,24 @@ passport.use(new GoogleStrategy({
             });
         }
 ));
+
+// Estrategia outh con facebook a traves de verificacion de token
+passport.use(new FacebookTokenStrategy({
+    clientID: process.env.FACEBOOK_ID,
+    clientSecret: process.env.FACEBOOK_SECRET
+    }, function (accessToken, refreshToken, profile, done) {
+        try {
+            Usuario.findOneOrCreateByFacebook(profile,function (err,user){
+                if (err) console.log('err'+err);
+                return done(err,user);
+            });
+        } catch(error) {
+            console.log(error);
+            return done(error, null);
+        }
+    }
+));
+
 
 passport.serializeUser(function(user,cb){
     cb(null, user.id);
