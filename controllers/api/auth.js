@@ -75,10 +75,10 @@ exports.verificarLogged= function validaruser(req, res, next){
 exports.authFacebookToken = function(req, res, next) {
     if (req.user){
         req.user.save().then( () => {
-            const token = jwt.sign({id: userInfo._id},req.app.get('secretKey'),{expiresIn:'7d'});
-            res.status(200).json({message:'Usuario encontrado o creado',data:{usuario:userInfo,token:token}});
+            const token = jwt.sign({id: req.user._id},req.app.get('SecretKey'),{expiresIn:'7d'});
+            res.status(200).json({message:'Usuario encontrado o creado',data:{usuario:req.user,token:token}});
          }).catch((err) => {
-             res.statis(500).json({message: err.message});
+             res.status(500).json({message: err.message});
          });
     } else {
         res.status(401);
